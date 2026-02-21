@@ -5,49 +5,43 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>ATTAMATION - Power Meter Monitor</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 :root {
-  --bg: #04070f;
-  --panel: #070d1a;
-  --panel2: #0a1220;
-  --border: rgba(0,200,255,0.08);
-  --accent: #00cfff;
-  --accent2: #00ff99;
-  --accent3: #ff9800;
-  --danger: #ff4466;
-  --muted: #4a6080;
-  --text: #c8dff0;
-  --mono: 'Share Tech Mono', monospace;
-  --sans: 'Exo 2', sans-serif;
-  --glow: 0 0 20px rgba(0,207,255,0.15);
-  --glow2: 0 0 20px rgba(0,255,153,0.15);
+  --bg:#04070f; --panel:#070d1a; --panel2:#0a1220;
+  --border:rgba(0,200,255,0.08);
+  --accent:#00cfff; --accent2:#00ff99; --accent3:#ff9800;
+  --danger:#ff4466; --muted:#4a6080; --text:#c8dff0;
+  --mono:'Share Tech Mono',monospace; --sans:'Exo 2',sans-serif;
+  --glow:0 0 20px rgba(0,207,255,0.15);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--text);overflow-x:hidden}
-
-/* BACKGROUND GRID */
 body::before{
-  content:'';position:fixed;top:0;left:0;right:0;bottom:0;
-  background-image:linear-gradient(rgba(0,207,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,207,255,0.025) 1px,transparent 1px);
+  content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(0,207,255,0.025) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(0,207,255,0.025) 1px,transparent 1px);
   background-size:40px 40px;pointer-events:none;z-index:0
 }
-
-.wrap{max-width:1400px;margin:0 auto;padding:18px;position:relative;z-index:1}
+.wrap{max-width:1400px;margin:0 auto;padding:16px;position:relative;z-index:1}
 
 /* HEADER */
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding:14px 20px;background:var(--panel);border:1px solid var(--border);border-radius:12px}
-.logo{display:flex;align-items:center;gap:14px}
-.logo-icon{width:38px;height:38px;border:2px solid var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:var(--glow)}
-.logo h1{font-family:var(--sans);font-weight:900;font-size:20px;letter-spacing:2px;color:#fff}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;
+  padding:12px 18px;background:var(--panel);border:1px solid var(--border);border-radius:12px;flex-wrap:wrap;gap:10px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-icon{width:36px;height:36px;border:2px solid var(--accent);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:var(--glow)}
+.logo h1{font-weight:900;font-size:19px;letter-spacing:2px;color:#fff}
 .logo h1 span{color:var(--accent)}
+.logo-sub{font-size:10px;color:var(--muted);letter-spacing:1px;margin-top:1px}
 .header-right{text-align:right}
 .clock{font-family:var(--mono);font-size:22px;color:var(--accent);letter-spacing:3px}
-.hdate{font-size:12px;color:var(--muted);margin-top:2px}
+.hdate{font-size:11px;color:var(--muted);margin-top:2px}
 
 /* STATUS BAR */
-.statusbar{display:flex;align-items:center;gap:10px;padding:8px 16px;background:var(--panel);border:1px solid var(--border);border-radius:8px;margin-bottom:18px;font-size:13px}
-.sdot{width:8px;height:8px;border-radius:50%;background:var(--danger);transition:background 0.3s;flex-shrink:0}
+.statusbar{display:flex;align-items:center;gap:10px;padding:7px 14px;
+  background:var(--panel);border:1px solid var(--border);border-radius:8px;margin-bottom:14px;font-size:12px;flex-wrap:wrap}
+.sdot{width:8px;height:8px;border-radius:50%;background:var(--danger);transition:all 0.3s;flex-shrink:0}
 .sdot.on{background:var(--accent2);box-shadow:0 0 8px var(--accent2)}
 .sdot.warn{background:var(--accent3)}
 #statusText{color:var(--muted)}
@@ -56,140 +50,141 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
 .rs485-badge.err{color:var(--danger);border-color:rgba(255,68,102,0.3);background:rgba(255,68,102,0.05)}
 
 /* TABS */
-.tabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
-.tab{padding:9px 18px;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;letter-spacing:0.5px;border:1px solid var(--border);color:var(--muted);background:var(--panel);transition:all 0.25s}
+.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.tab{padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:600;font-size:12px;letter-spacing:0.5px;
+  border:1px solid var(--border);color:var(--muted);background:var(--panel);transition:all 0.25s}
 .tab:hover{color:var(--accent);border-color:rgba(0,207,255,0.2)}
-.tab.active{background:linear-gradient(135deg,rgba(0,207,255,0.15),rgba(0,255,153,0.08));color:var(--accent);border-color:rgba(0,207,255,0.3);box-shadow:var(--glow)}
+.tab.active{background:linear-gradient(135deg,rgba(0,207,255,0.15),rgba(0,255,153,0.08));
+  color:var(--accent);border-color:rgba(0,207,255,0.3);box-shadow:var(--glow)}
 .tab-content{display:none}
 .tab-content.active{display:block}
 
 /* SECTION TITLE */
-.section-title{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.stitle{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;
+  margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
 
-/* OVERVIEW GRID */
-.overview-top{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
-.overview-mid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px}
-.overview-bot{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px}
-
-/* METRIC CARD */
-.mcard{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;position:relative;overflow:hidden;transition:border-color 0.3s}
-.mcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:opacity 0.3s}
-.mcard:hover{border-color:rgba(0,207,255,0.2)}
-.mcard:hover::before{opacity:1}
-.mcard.green::before{background:linear-gradient(90deg,transparent,var(--accent2),transparent)}
-.mcard.orange::before{background:linear-gradient(90deg,transparent,var(--accent3),transparent)}
-.mcard.red::before{background:linear-gradient(90deg,transparent,var(--danger),transparent)}
-.mcard-label{font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
-.mcard-value{font-family:var(--mono);font-size:28px;color:var(--accent);line-height:1;margin-bottom:4px}
-.mcard-value.green{color:var(--accent2)}
-.mcard-value.orange{color:var(--accent3)}
-.mcard-value.sm{font-size:20px}
-.mcard-unit{font-size:11px;color:var(--muted);font-family:var(--mono)}
-.mcard-sub{font-size:11px;color:var(--muted);margin-top:6px;display:flex;gap:10px}
-
-/* VOLTAGE PHASE CARD - BIG */
-.vphase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
-.vcard{background:linear-gradient(135deg,var(--panel),var(--panel2));border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;position:relative;overflow:hidden}
+/* VOLTAGE PHASE CARDS */
+.vphase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.vcard{background:linear-gradient(135deg,var(--panel),var(--panel2));border:1px solid var(--border);
+  border-radius:13px;padding:18px;text-align:center;position:relative;overflow:hidden}
 .vcard::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px}
 .vcard.r::after{background:linear-gradient(90deg,var(--accent),transparent)}
 .vcard.s::after{background:linear-gradient(90deg,var(--accent2),transparent)}
 .vcard.t::after{background:linear-gradient(90deg,var(--accent3),transparent)}
-.vcard-phase{font-size:11px;letter-spacing:2px;color:var(--muted);margin-bottom:10px;font-weight:700}
-.vcard-val{font-family:var(--mono);font-size:40px;line-height:1;margin-bottom:4px}
+.vcard-phase{font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:8px;font-weight:700}
+.vcard-val{font-family:var(--mono);font-size:38px;line-height:1;margin-bottom:3px}
 .vcard.r .vcard-val{color:var(--accent)}
 .vcard.s .vcard-val{color:var(--accent2)}
 .vcard.t .vcard-val{color:var(--accent3)}
-.vcard-unit{font-size:12px;color:var(--muted);font-family:var(--mono)}
-.vcard-sub{font-size:11px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-family:var(--mono)}
+.vcard-unit{font-size:11px;color:var(--muted);font-family:var(--mono)}
+.vcard-sub{font-size:10px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-family:var(--mono)}
 
-/* CURRENT BAR */
-.curr-bars{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px}
-.curr-bar-item{display:flex;align-items:center;gap:14px;margin-bottom:14px}
-.curr-bar-item:last-child{margin-bottom:0}
-.curr-bar-label{font-size:12px;font-weight:700;color:var(--muted);width:40px;flex-shrink:0}
-.curr-bar-track{flex:1;height:8px;background:rgba(255,255,255,0.04);border-radius:4px;overflow:hidden}
-.curr-bar-fill{height:100%;border-radius:4px;transition:width 0.6s ease;min-width:2px}
-.curr-bar-fill.r{background:linear-gradient(90deg,var(--accent),rgba(0,207,255,0.5))}
-.curr-bar-fill.s{background:linear-gradient(90deg,var(--accent2),rgba(0,255,153,0.5))}
-.curr-bar-fill.t{background:linear-gradient(90deg,var(--accent3),rgba(255,152,0,0.5))}
-.curr-bar-fill.avg{background:linear-gradient(90deg,#aaa,#555)}
-.curr-bar-val{font-family:var(--mono);font-size:14px;color:var(--text);width:70px;text-align:right;flex-shrink:0}
+/* CURRENT BARS */
+.curr-wrap{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:18px;margin-bottom:12px}
+.curr-item{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.curr-item:last-child{margin-bottom:0}
+.curr-lbl{font-size:11px;font-weight:700;color:var(--muted);width:38px;flex-shrink:0;font-family:var(--mono)}
+.curr-track{flex:1;height:7px;background:rgba(255,255,255,0.04);border-radius:4px;overflow:hidden}
+.curr-fill{height:100%;border-radius:4px;transition:width 0.7s ease;min-width:2px}
+.curr-fill.r{background:linear-gradient(90deg,var(--accent),rgba(0,207,255,0.4))}
+.curr-fill.s{background:linear-gradient(90deg,var(--accent2),rgba(0,255,153,0.4))}
+.curr-fill.t{background:linear-gradient(90deg,var(--accent3),rgba(255,152,0,0.4))}
+.curr-fill.avg{background:linear-gradient(90deg,#888,#444)}
+.curr-val{font-family:var(--mono);font-size:13px;color:var(--text);width:68px;text-align:right;flex-shrink:0}
 
 /* POWER SUMMARY */
-.power-summary{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
-.power-big{background:linear-gradient(135deg,var(--panel),var(--panel2));border:1px solid var(--border);border-radius:14px;padding:24px;display:flex;flex-direction:column;justify-content:center}
-.power-big-label{font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:12px}
-.power-big-val{font-family:var(--mono);font-size:52px;color:var(--accent);line-height:1}
-.power-big-unit{font-size:14px;color:var(--muted);font-family:var(--mono);margin-top:4px}
-.power-sub-row{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
-.power-sub{flex:1;background:rgba(0,0,0,0.2);border-radius:8px;padding:10px;min-width:100px}
-.power-sub-label{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
-.power-sub-val{font-family:var(--mono);font-size:16px;color:var(--text);margin-top:4px}
+.power-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.power-big{background:linear-gradient(135deg,var(--panel),var(--panel2));border:1px solid var(--border);
+  border-radius:13px;padding:20px}
+.power-big-lbl{font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:10px;font-weight:700}
+.power-big-val{font-family:var(--mono);font-size:46px;line-height:1}
+.power-big-val.blue{color:var(--accent)}
+.power-big-val.green{color:var(--accent2)}
+.power-big-unit{font-size:13px;color:var(--muted);font-family:var(--mono);margin-top:3px}
+.power-sub-row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.power-sub{flex:1;background:rgba(0,0,0,0.2);border-radius:8px;padding:9px;min-width:90px}
+.power-sub-lbl{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.power-sub-val{font-family:var(--mono);font-size:15px;color:var(--text);margin-top:4px}
 
-/* ENERGY CARDS */
-.energy-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:14px}
+/* GENERIC METRIC CARD */
+.mcard{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px;
+  position:relative;overflow:hidden;transition:border-color 0.3s}
+.mcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:opacity 0.3s}
+.mcard:hover{border-color:rgba(0,207,255,0.2)}
+.mcard:hover::before{opacity:1}
+.mcard.green::before{background:linear-gradient(90deg,transparent,var(--accent2),transparent)}
+.mcard.orange::before{background:linear-gradient(90deg,transparent,var(--accent3),transparent)}
+.mcard-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:7px}
+.mcard-val{font-family:var(--mono);font-size:24px;color:var(--accent);line-height:1;margin-bottom:3px}
+.mcard-val.green{color:var(--accent2)}
+.mcard-val.orange{color:var(--accent3)}
+.mcard-val.sm{font-size:18px}
+.mcard-unit{font-size:10px;color:var(--muted);font-family:var(--mono)}
 
-/* CHART AREA */
-.chart-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px}
-.chart-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px}
-.chart-card-title{font-size:13px;font-weight:700;color:var(--text);letter-spacing:0.5px}
-.chart-filter{display:flex;gap:6px}
-.cfbtn{padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:11px;cursor:pointer;font-family:var(--sans);font-weight:600;transition:all 0.2s}
-.cfbtn.active{border-color:rgba(0,207,255,0.4);color:var(--accent);background:rgba(0,207,255,0.08)}
-.chart-wrapper{height:200px;position:relative}
+/* GRIDS */
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px}
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:12px}
+
+/* CHART CARD */
+.chart-card{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:18px;margin-bottom:12px}
+.chart-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.chart-title{font-size:12px;font-weight:700;color:var(--text);letter-spacing:0.5px}
+.chart-wrap{height:190px;position:relative}
 
 /* DATE NAV */
-.date-nav{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
-.dnbtn{background:var(--panel2);border:1px solid var(--border);color:var(--accent);padding:7px 12px;border-radius:8px;cursor:pointer;font-size:14px;transition:all 0.2s;font-family:var(--sans)}
+.date-nav{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.dnbtn{background:var(--panel2);border:1px solid var(--border);color:var(--accent);
+  padding:7px 11px;border-radius:8px;cursor:pointer;font-size:13px;transition:all 0.2s}
 .dnbtn:hover{border-color:rgba(0,207,255,0.3);background:rgba(0,207,255,0.05)}
-.date-input{background:var(--panel2);color:var(--accent);border-radius:8px;padding:7px 12px;border:1px solid var(--border);font-size:13px;font-family:var(--mono)}
-.date-display{flex:1;text-align:center;font-family:var(--mono);color:var(--accent);font-size:14px}
-.today-btn{padding:7px 14px;border-radius:8px;border:1px solid rgba(0,207,255,0.2);background:rgba(0,207,255,0.08);color:var(--accent);font-size:12px;font-weight:700;cursor:pointer;font-family:var(--sans)}
+.date-input{background:var(--panel2);color:var(--accent);border-radius:8px;padding:7px 11px;
+  border:1px solid var(--border);font-size:12px;font-family:var(--mono)}
+.today-btn{padding:7px 13px;border-radius:8px;border:1px solid rgba(0,207,255,0.2);
+  background:rgba(0,207,255,0.08);color:var(--accent);font-size:11px;font-weight:700;cursor:pointer}
+.clear-btn{padding:7px 13px;border-radius:8px;border:1px solid var(--border);
+  background:transparent;color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;transition:all 0.2s}
+.clear-btn:hover{border-color:rgba(255,68,102,0.3);color:var(--danger)}
 
 /* HISTORY */
-.hlist{max-height:450px;overflow-y:auto}
+.select-input{background:var(--panel2);color:var(--accent);border-radius:8px;padding:7px 12px;
+  border:1px solid var(--border);font-size:12px;font-family:var(--sans);width:100%;margin-bottom:10px}
+.hcount{font-size:11px;color:var(--muted);margin-bottom:8px}
+.hlist{max-height:430px;overflow-y:auto}
 .hlist::-webkit-scrollbar{width:4px}
 .hlist::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.hitem{display:flex;align-items:center;gap:12px;padding:11px 14px;background:rgba(255,255,255,0.015);border-radius:8px;margin-bottom:8px;border:1px solid transparent;transition:border-color 0.2s}
+.hitem{display:flex;align-items:center;gap:10px;padding:10px 13px;
+  background:rgba(255,255,255,0.015);border-radius:8px;margin-bottom:6px;
+  border:1px solid transparent;transition:border-color 0.2s}
 .hitem:hover{border-color:var(--border)}
-.hitem-icon{font-size:18px;flex-shrink:0;width:26px;text-align:center}
+.hitem-icon{font-size:17px;flex-shrink:0;width:24px;text-align:center}
 .hitem-main{flex:1}
-.hitem-title{font-size:13px;font-weight:600;color:var(--text)}
+.hitem-title{font-size:12px;font-weight:600;color:var(--text)}
 .hitem-title.connected{color:var(--accent2)}
 .hitem-title.disconnected{color:var(--danger)}
 .hitem-title.info{color:var(--accent)}
-.hitem-sub{font-size:11px;color:var(--muted);margin-top:2px;font-family:var(--mono)}
-.hitem-time{font-family:var(--mono);font-size:11px;color:var(--muted)}
-.hcount{font-size:11px;color:var(--muted);margin-bottom:10px}
-.no-data{text-align:center;color:var(--muted);padding:40px;font-size:13px}
-.storage-info{font-size:11px;color:var(--muted);text-align:center;padding:10px;background:rgba(255,255,255,0.02);border-radius:8px;margin-top:12px}
-
-/* SELECT */
-.select-input{background:var(--panel2);color:var(--accent);border-radius:8px;padding:7px 12px;border:1px solid var(--border);font-size:13px;font-family:var(--sans);width:100%;margin-bottom:12px}
-
-/* CLEAR BTN */
-.clear-btn{padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:all 0.2s}
-.clear-btn:hover{border-color:rgba(255,68,102,0.3);color:var(--danger)}
+.hitem-sub{font-size:10px;color:var(--muted);margin-top:1px;font-family:var(--mono)}
+.hitem-time{font-family:var(--mono);font-size:10px;color:var(--muted);flex-shrink:0}
+.no-data{text-align:center;color:var(--muted);padding:36px;font-size:12px}
+.storage-info{font-size:10px;color:var(--muted);text-align:center;padding:8px;
+  background:rgba(255,255,255,0.02);border-radius:8px;margin-top:10px}
+.ctrl-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
 
 /* RESPONSIVE */
-@media(max-width:1100px){
-  .overview-top{grid-template-columns:1fr 1fr}
-  .energy-grid{grid-template-columns:repeat(2,1fr)}
-}
+@media(max-width:1024px){.g4{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:768px){
-  .overview-top,.overview-mid,.overview-bot{grid-template-columns:1fr 1fr}
-  .vphase-grid{grid-template-columns:1fr}
-  .power-summary{grid-template-columns:1fr}
-  .vcard-val{font-size:30px}
-  .power-big-val{font-size:36px}
-  .energy-grid{grid-template-columns:repeat(2,1fr)}
+  .vphase-grid,.power-grid,.g3{grid-template-columns:1fr 1fr}
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .vcard-val{font-size:28px}
+  .power-big-val{font-size:34px}
 }
 @media(max-width:480px){
-  .overview-top,.overview-mid,.overview-bot,.energy-grid{grid-template-columns:1fr 1fr}
-  header{flex-direction:column;gap:10px;text-align:center}
+  .vphase-grid,.power-grid,.g3,.g4,.g2{grid-template-columns:1fr 1fr}
+  header{flex-direction:column;text-align:center}
   .header-right{text-align:center}
   .tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}
   .tab{flex-shrink:0}
+  .rs485-badge{margin-left:0}
 }
 </style>
 </head>
@@ -199,10 +194,10 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
 <!-- HEADER -->
 <header>
   <div class="logo">
-    <div class="logo-icon">⚡</div>
+    <div class="logo-icon">&#9889;</div>
     <div>
       <h1>ATTA<span>MATION</span></h1>
-      <div style="font-size:11px;color:var(--muted);letter-spacing:1px">POWER METER MONITOR</div>
+      <div class="logo-sub">POWER METER MONITOR</div>
     </div>
   </div>
   <div class="header-right">
@@ -211,7 +206,7 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
   </div>
 </header>
 
-<!-- STATUS -->
+<!-- STATUS BAR -->
 <div class="statusbar">
   <div class="sdot" id="sdot"></div>
   <span id="statusText">Menghubungkan ke MQTT...</span>
@@ -220,101 +215,98 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
 
 <!-- TABS -->
 <div class="tabs">
-  <div class="tab active" data-tab="dashboard">⚡ Dashboard</div>
-  <div class="tab" data-tab="detail">📋 Detail</div>
-  <div class="tab" data-tab="trends">📈 Trends</div>
-  <div class="tab" data-tab="history">📜 History</div>
+  <div class="tab active" data-tab="dashboard">&#9889; Dashboard</div>
+  <div class="tab" data-tab="detail">&#128203; Detail</div>
+  <div class="tab" data-tab="trends">&#128200; Trends</div>
+  <div class="tab" data-tab="history">&#128220; History</div>
 </div>
 
-<!-- ===== TAB: DASHBOARD ===== -->
+<!-- ===== DASHBOARD ===== -->
 <div class="tab-content active" id="tab-dashboard">
 
-  <!-- VOLTAGE L-N -->
-  <div class="section-title">TEGANGAN FASE - NETRAL (L-N)</div>
+  <div class="stitle">Tegangan Fase - Netral (L-N)</div>
   <div class="vphase-grid">
     <div class="vcard r">
       <div class="vcard-phase">FASE R</div>
-      <div class="vcard-val" id="VRN">---</div>
+      <div class="vcard-val" id="d_VRN">---</div>
       <div class="vcard-unit">Volt</div>
-      <div class="vcard-sub">L-L R-S: <span id="VRS_s">---</span> V</div>
+      <div class="vcard-sub">L-L R-S: <span id="d_VRS_s">---</span> V</div>
     </div>
     <div class="vcard s">
       <div class="vcard-phase">FASE S</div>
-      <div class="vcard-val" id="VSN">---</div>
+      <div class="vcard-val" id="d_VSN">---</div>
       <div class="vcard-unit">Volt</div>
-      <div class="vcard-sub">L-L S-T: <span id="VST_s">---</span> V</div>
+      <div class="vcard-sub">L-L S-T: <span id="d_VST_s">---</span> V</div>
     </div>
     <div class="vcard t">
       <div class="vcard-phase">FASE T</div>
-      <div class="vcard-val" id="VTN">---</div>
+      <div class="vcard-val" id="d_VTN">---</div>
       <div class="vcard-unit">Volt</div>
-      <div class="vcard-sub">L-L R-T: <span id="VRT_s">---</span> V</div>
+      <div class="vcard-sub">L-L R-T: <span id="d_VRT_s">---</span> V</div>
     </div>
   </div>
 
-  <!-- CURRENT BARS -->
-  <div class="section-title">ARUS (CURRENT)</div>
-  <div class="curr-bars">
-    <div class="curr-bar-item">
-      <div class="curr-bar-label">I-R</div>
-      <div class="curr-bar-track"><div class="curr-bar-fill r" id="bar_IR" style="width:0%"></div></div>
-      <div class="curr-bar-val"><span id="IR">---</span> A</div>
+  <div class="stitle">Arus (Current)</div>
+  <div class="curr-wrap">
+    <div class="curr-item">
+      <div class="curr-lbl">I-R</div>
+      <div class="curr-track"><div class="curr-fill r" id="bar_IR" style="width:0%"></div></div>
+      <div class="curr-val"><span id="d_IR">---</span> A</div>
     </div>
-    <div class="curr-bar-item">
-      <div class="curr-bar-label">I-S</div>
-      <div class="curr-bar-track"><div class="curr-bar-fill s" id="bar_IS" style="width:0%"></div></div>
-      <div class="curr-bar-val"><span id="IS">---</span> A</div>
+    <div class="curr-item">
+      <div class="curr-lbl">I-S</div>
+      <div class="curr-track"><div class="curr-fill s" id="bar_IS" style="width:0%"></div></div>
+      <div class="curr-val"><span id="d_IS">---</span> A</div>
     </div>
-    <div class="curr-bar-item">
-      <div class="curr-bar-label">I-T</div>
-      <div class="curr-bar-track"><div class="curr-bar-fill t" id="bar_IT" style="width:0%"></div></div>
-      <div class="curr-bar-val"><span id="IT">---</span> A</div>
+    <div class="curr-item">
+      <div class="curr-lbl">I-T</div>
+      <div class="curr-track"><div class="curr-fill t" id="bar_IT" style="width:0%"></div></div>
+      <div class="curr-val"><span id="d_IT">---</span> A</div>
     </div>
-    <div class="curr-bar-item">
-      <div class="curr-bar-label">I-AVG</div>
-      <div class="curr-bar-track"><div class="curr-bar-fill avg" id="bar_IAVG" style="width:0%"></div></div>
-      <div class="curr-bar-val"><span id="IAVG">---</span> A</div>
+    <div class="curr-item">
+      <div class="curr-lbl">I-AVG</div>
+      <div class="curr-track"><div class="curr-fill avg" id="bar_IAVG" style="width:0%"></div></div>
+      <div class="curr-val"><span id="d_IAVG">---</span> A</div>
     </div>
   </div>
 
-  <!-- POWER SUMMARY -->
-  <div class="section-title">DAYA</div>
-  <div class="power-summary">
+  <div class="stitle">Daya</div>
+  <div class="power-grid">
     <div class="power-big">
-      <div class="power-big-label">ACTIVE POWER TOTAL</div>
-      <div class="power-big-val" id="TAP">---</div>
+      <div class="power-big-lbl">Active Power Total</div>
+      <div class="power-big-val blue" id="d_TAP">---</div>
       <div class="power-big-unit">kW</div>
       <div class="power-sub-row">
         <div class="power-sub">
-          <div class="power-sub-label">Reactive Power</div>
-          <div class="power-sub-val"><span id="TRP">---</span> kVAr</div>
+          <div class="power-sub-lbl">Reactive Power</div>
+          <div class="power-sub-val"><span id="d_TRP">---</span> kVAr</div>
         </div>
         <div class="power-sub">
-          <div class="power-sub-label">Cos Phi (PF)</div>
-          <div class="power-sub-val" id="TPF">---</div>
+          <div class="power-sub-lbl">Power Factor</div>
+          <div class="power-sub-val" id="d_TPF">---</div>
         </div>
         <div class="power-sub">
-          <div class="power-sub-label">Frequency</div>
-          <div class="power-sub-val"><span id="HZ">---</span> Hz</div>
+          <div class="power-sub-lbl">Frequency</div>
+          <div class="power-sub-val"><span id="d_HZ">---</span> Hz</div>
         </div>
       </div>
     </div>
-    <div class="power-big" style="background:linear-gradient(135deg,var(--panel),rgba(0,255,153,0.04));border-color:rgba(0,255,153,0.1)">
-      <div class="power-big-label">ACTIVE ENERGY (+)</div>
-      <div class="power-big-val" style="color:var(--accent2)" id="PAE">---</div>
+    <div class="power-big" style="border-color:rgba(0,255,153,0.12)">
+      <div class="power-big-lbl">Active Energy (+)</div>
+      <div class="power-big-val green" id="d_PAE">---</div>
       <div class="power-big-unit">kWh</div>
       <div class="power-sub-row">
         <div class="power-sub">
-          <div class="power-sub-label">Active Energy (-)</div>
-          <div class="power-sub-val"><span id="NAE">---</span> kWh</div>
+          <div class="power-sub-lbl">Active Energy (-)</div>
+          <div class="power-sub-val"><span id="d_NAE">---</span> kWh</div>
         </div>
         <div class="power-sub">
-          <div class="power-sub-label">React. Energy (+)</div>
-          <div class="power-sub-val"><span id="PRE">---</span> kVArh</div>
+          <div class="power-sub-lbl">React. Energy (+)</div>
+          <div class="power-sub-val"><span id="d_PRE">---</span> kVArh</div>
         </div>
         <div class="power-sub">
-          <div class="power-sub-label">React. Energy (-)</div>
-          <div class="power-sub-val"><span id="NRE">---</span> kVArh</div>
+          <div class="power-sub-lbl">React. Energy (-)</div>
+          <div class="power-sub-val"><span id="d_NRE">---</span> kVArh</div>
         </div>
       </div>
     </div>
@@ -322,184 +314,175 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
 
 </div>
 
-<!-- ===== TAB: DETAIL ===== -->
+<!-- ===== DETAIL ===== -->
 <div class="tab-content" id="tab-detail">
-  <div class="section-title">TEGANGAN FASE - FASE (L-L)</div>
-  <div class="overview-top" style="grid-template-columns:repeat(3,1fr)">
+
+  <div class="stitle">Tegangan Fase - Fase (L-L)</div>
+  <div class="g3">
     <div class="mcard">
-      <div class="mcard-label">V R-S (Line-Line)</div>
-      <div class="mcard-value" id="VRS">---</div>
+      <div class="mcard-lbl">V R-S (Line-Line)</div>
+      <div class="mcard-val" id="dt_VRS">---</div>
       <div class="mcard-unit">Volt</div>
     </div>
     <div class="mcard">
-      <div class="mcard-label">V S-T (Line-Line)</div>
-      <div class="mcard-value" id="VST">---</div>
+      <div class="mcard-lbl">V S-T (Line-Line)</div>
+      <div class="mcard-val" id="dt_VST">---</div>
       <div class="mcard-unit">Volt</div>
     </div>
     <div class="mcard">
-      <div class="mcard-label">V R-T (Line-Line)</div>
-      <div class="mcard-value" id="VRT">---</div>
+      <div class="mcard-lbl">V R-T (Line-Line)</div>
+      <div class="mcard-val" id="dt_VRT">---</div>
       <div class="mcard-unit">Volt</div>
     </div>
   </div>
 
-  <div class="section-title">TEGANGAN FASE - NETRAL (L-N) DETAIL</div>
-  <div class="overview-top" style="grid-template-columns:repeat(3,1fr)">
+  <div class="stitle">Tegangan Fase - Netral (L-N) Detail</div>
+  <div class="g3">
     <div class="mcard">
-      <div class="mcard-label">V R-N</div>
-      <div class="mcard-value" id="VRN_d">---</div>
+      <div class="mcard-lbl">V R-N</div>
+      <div class="mcard-val" id="dt_VRN">---</div>
       <div class="mcard-unit">Volt</div>
     </div>
     <div class="mcard">
-      <div class="mcard-label">V S-N</div>
-      <div class="mcard-value" id="VSN_d">---</div>
+      <div class="mcard-lbl">V S-N</div>
+      <div class="mcard-val" id="dt_VSN">---</div>
       <div class="mcard-unit">Volt</div>
     </div>
     <div class="mcard">
-      <div class="mcard-label">V T-N</div>
-      <div class="mcard-value" id="VTN_d">---</div>
+      <div class="mcard-lbl">V T-N</div>
+      <div class="mcard-val" id="dt_VTN">---</div>
       <div class="mcard-unit">Volt</div>
     </div>
   </div>
 
-  <div class="section-title">ARUS DETAIL</div>
-  <div class="overview-mid">
+  <div class="stitle">Arus Detail</div>
+  <div class="g4">
     <div class="mcard">
-      <div class="mcard-label">I Fase R</div>
-      <div class="mcard-value" id="IR_d">---</div>
+      <div class="mcard-lbl">I Fase R</div>
+      <div class="mcard-val" id="dt_IR">---</div>
       <div class="mcard-unit">Ampere</div>
     </div>
     <div class="mcard">
-      <div class="mcard-label">I Fase S</div>
-      <div class="mcard-value" id="IS_d">---</div>
+      <div class="mcard-lbl">I Fase S</div>
+      <div class="mcard-val" id="dt_IS">---</div>
       <div class="mcard-unit">Ampere</div>
     </div>
     <div class="mcard">
-      <div class="mcard-label">I Fase T</div>
-      <div class="mcard-value" id="IT_d">---</div>
+      <div class="mcard-lbl">I Fase T</div>
+      <div class="mcard-val" id="dt_IT">---</div>
       <div class="mcard-unit">Ampere</div>
     </div>
     <div class="mcard">
-      <div class="mcard-label">I Average</div>
-      <div class="mcard-value" id="IAVG_d">---</div>
+      <div class="mcard-lbl">I Average</div>
+      <div class="mcard-val" id="dt_IAVG">---</div>
       <div class="mcard-unit">Ampere</div>
     </div>
   </div>
 
-  <div class="section-title">DAYA & ENERGI DETAIL</div>
-  <div class="energy-grid">
+  <div class="stitle">Daya &amp; Energi Detail</div>
+  <div class="g4">
     <div class="mcard green">
-      <div class="mcard-label">Active Power Total</div>
-      <div class="mcard-value green" id="TAP_d">---</div>
+      <div class="mcard-lbl">Active Power Total</div>
+      <div class="mcard-val green" id="dt_TAP">---</div>
       <div class="mcard-unit">kW</div>
     </div>
     <div class="mcard orange">
-      <div class="mcard-label">Reactive Power Total</div>
-      <div class="mcard-value orange" id="TRP_d">---</div>
+      <div class="mcard-lbl">Reactive Power Total</div>
+      <div class="mcard-val orange" id="dt_TRP">---</div>
       <div class="mcard-unit">kVAr</div>
     </div>
     <div class="mcard">
-      <div class="mcard-label">Cos Phi / Power Factor</div>
-      <div class="mcard-value" id="TPF_d">---</div>
+      <div class="mcard-lbl">Power Factor (Cos Phi)</div>
+      <div class="mcard-val" id="dt_TPF">---</div>
       <div class="mcard-unit">PF</div>
     </div>
     <div class="mcard">
-      <div class="mcard-label">Frequency</div>
-      <div class="mcard-value" id="HZ_d">---</div>
+      <div class="mcard-lbl">Frequency</div>
+      <div class="mcard-val" id="dt_HZ">---</div>
       <div class="mcard-unit">Hz</div>
     </div>
     <div class="mcard green">
-      <div class="mcard-label">Active Energy (+)</div>
-      <div class="mcard-value green sm" id="PAE_d">---</div>
+      <div class="mcard-lbl">Active Energy (+)</div>
+      <div class="mcard-val green sm" id="dt_PAE">---</div>
       <div class="mcard-unit">kWh</div>
     </div>
     <div class="mcard">
-      <div class="mcard-label">Active Energy (-)</div>
-      <div class="mcard-value sm" id="NAE_d">---</div>
+      <div class="mcard-lbl">Active Energy (-)</div>
+      <div class="mcard-val sm" id="dt_NAE">---</div>
       <div class="mcard-unit">kWh</div>
     </div>
     <div class="mcard green">
-      <div class="mcard-label">Reactive Energy (+)</div>
-      <div class="mcard-value green sm" id="PRE_d">---</div>
+      <div class="mcard-lbl">Reactive Energy (+)</div>
+      <div class="mcard-val green sm" id="dt_PRE">---</div>
       <div class="mcard-unit">kVArh</div>
     </div>
     <div class="mcard">
-      <div class="mcard-label">Reactive Energy (-)</div>
-      <div class="mcard-value sm" id="NRE_d">---</div>
+      <div class="mcard-lbl">Reactive Energy (-)</div>
+      <div class="mcard-val sm" id="dt_NRE">---</div>
       <div class="mcard-unit">kVArh</div>
     </div>
   </div>
+
 </div>
 
-<!-- ===== TAB: TRENDS ===== -->
+<!-- ===== TRENDS ===== -->
 <div class="tab-content" id="tab-trends">
+  <div class="ctrl-hdr">
+    <div class="stitle" style="margin:0;border:none;padding:0">Trend Monitoring</div>
+    <button class="clear-btn" id="clearTrends">Clear All</button>
+  </div>
   <div class="date-nav">
-    <button class="dnbtn" id="trendPrev">◀</button>
+    <button class="dnbtn" id="trendPrev">&#9664;</button>
     <input type="date" id="trendDate" class="date-input">
-    <button class="dnbtn" id="trendNext">▶</button>
+    <button class="dnbtn" id="trendNext">&#9654;</button>
     <button class="today-btn" id="trendToday">Today</button>
-    <button class="clear-btn" id="clearTrends" style="margin-left:auto">Clear All</button>
   </div>
 
   <div class="chart-card">
-    <div class="chart-card-header">
-      <div class="chart-card-title">⚡ Tegangan L-N (V)</div>
-    </div>
-    <div class="chart-wrapper"><canvas id="chartVLN"></canvas></div>
+    <div class="chart-hdr"><div class="chart-title">Tegangan L-N (V) &mdash; R / S / T</div></div>
+    <div class="chart-wrap"><canvas id="cVLN"></canvas></div>
   </div>
-
   <div class="chart-card">
-    <div class="chart-card-header">
-      <div class="chart-card-title">🔗 Tegangan L-L (V)</div>
-    </div>
-    <div class="chart-wrapper"><canvas id="chartVLL"></canvas></div>
+    <div class="chart-hdr"><div class="chart-title">Tegangan L-L (V) &mdash; R-S / S-T / R-T</div></div>
+    <div class="chart-wrap"><canvas id="cVLL"></canvas></div>
   </div>
-
   <div class="chart-card">
-    <div class="chart-card-header">
-      <div class="chart-card-title">〰️ Arus (A)</div>
-    </div>
-    <div class="chart-wrapper"><canvas id="chartI"></canvas></div>
+    <div class="chart-hdr"><div class="chart-title">Arus (A) &mdash; R / S / T / AVG</div></div>
+    <div class="chart-wrap"><canvas id="cI"></canvas></div>
   </div>
-
   <div class="chart-card">
-    <div class="chart-card-header">
-      <div class="chart-card-title">⚙️ Active Power Total (kW)</div>
-    </div>
-    <div class="chart-wrapper"><canvas id="chartPow"></canvas></div>
+    <div class="chart-hdr"><div class="chart-title">Active Power Total (kW)</div></div>
+    <div class="chart-wrap"><canvas id="cPow"></canvas></div>
   </div>
-
   <div class="chart-card">
-    <div class="chart-card-header">
-      <div class="chart-card-title">📐 Power Factor & Frequency</div>
-    </div>
-    <div class="chart-wrapper"><canvas id="chartPF"></canvas></div>
+    <div class="chart-hdr"><div class="chart-title">Power Factor &amp; Frequency (Hz)</div></div>
+    <div class="chart-wrap"><canvas id="cPF"></canvas></div>
   </div>
-
+  <div class="chart-card">
+    <div class="chart-hdr"><div class="chart-title">Active Energy kWh (+/-)</div></div>
+    <div class="chart-wrap"><canvas id="cEnergy"></canvas></div>
+  </div>
   <div class="storage-info" id="trendInfo">Storage: 0 data points</div>
 </div>
 
-<!-- ===== TAB: HISTORY ===== -->
+<!-- ===== HISTORY ===== -->
 <div class="tab-content" id="tab-history">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
-    <div class="section-title" style="margin:0;border:none;padding:0">📜 SYSTEM HISTORY</div>
+  <div class="ctrl-hdr">
+    <div class="stitle" style="margin:0;border:none;padding:0">System History</div>
     <button class="clear-btn" id="clearHistory">Clear All</button>
   </div>
-
   <div class="date-nav">
-    <button class="dnbtn" id="histPrev">◀</button>
+    <button class="dnbtn" id="histPrev">&#9664;</button>
     <input type="date" id="histDate" class="date-input">
-    <button class="dnbtn" id="histNext">▶</button>
+    <button class="dnbtn" id="histNext">&#9654;</button>
     <button class="today-btn" id="histToday">Today</button>
   </div>
-
   <select id="histFilter" class="select-input">
     <option value="all">Semua Event</option>
     <option value="mqtt">MQTT Status</option>
     <option value="rs485">RS485 Status</option>
-    <option value="data">Data Update</option>
+    <option value="data">Data Snapshot</option>
   </select>
-
   <div class="hcount" id="hcount">0 event</div>
   <div class="hlist" id="hlist"><div class="no-data">Belum ada history</div></div>
   <div class="storage-info" id="histInfo">Storage: 0 events</div>
@@ -509,390 +492,557 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
 
 <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 <script>
-// ============ CONFIG ============
-// GANTI sesuai broker MQTT Anda untuk Power Meter
-const MQTT_HOST    = "eb276bce81de4b5b95aadbfea766f882.s1.eu.hivemq.cloud"; // ganti ke broker Anda
-const MQTT_PORT    = 8883; // WSS port (8884 HiveMQ public, 8084 HiveMQ cloud)
-const MQTT_USER    = "PMP-Iot";   // kosong jika broker publik
-const MQTT_PASS    = "Primapack123";
-const MQTT_PATH    = "/mqtt";
+// ============================================================
+//  KONFIGURASI MQTT
+//  Sesuaikan dengan broker Anda
+// ============================================================
+var MQTT_HOST  = "eb276bce81de4b5b95aadbfea766f882.s1.eu.hivemq.cloud";
+var MQTT_PORT  = 8884;      // HiveMQ Cloud WSS = 8884
+var MQTT_PATH  = "/mqtt";
+var MQTT_USER  = "PMP-Iot";
+var MQTT_PASS  = "Primapack123";
+var TOPIC_DATA = "power_meter/data";
 
-const TOPIC_DATA   = "power_meter/data";    // harus sama dengan Arduino
+// ============================================================
+//  KONSTANTA
+// ============================================================
+var MAX_DAYS      = 14;
+var DATA_VER      = 1;
+var MAX_CURR_A    = 500;   // Arus maks untuk bar (sesuaikan)
+var TREND_SAVE_MS = 5000;  // Interval simpan trend
 
-const MAX_DAYS     = 14;
-const DATA_VERSION = 1;
-const MAX_CURRENT  = 500; // Ampere maksimum untuk bar chart (sesuaikan)
+// ============================================================
+//  STATE
+// ============================================================
+var trendData    = {};
+var eventHistory = {};
+var trendViewD   = new Date();
+var histViewD    = new Date();
+var lastTrendSave = 0;
+var prevRS485    = null;
+var lastDataLog  = 0;
 
-// ============ STATE ============
-let trendData   = {};
-let eventHistory = {};
-let trendViewDate   = new Date();
-let histViewDate    = new Date();
-let lastValues = {};
-let lastTrendSave = 0;
-const TREND_INTERVAL_MS = 5000; // simpan tiap 5 detik
+// ============================================================
+//  UTILITY
+// ============================================================
+function pad(n){ return n < 10 ? '0'+n : ''+n; }
 
-// ============ UTILITY ============
-function pad(n){return n<10?'0'+n:n}
-function fmt(d){return d.toISOString().split('T')[0]}
-function fmtTime(d){return pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds())}
-function parseD(s){return new Date(s+'T00:00:00')}
-function n2(v){return isNaN(v)||v===null?'---':Number(v).toFixed(1)}
-function n3(v){return isNaN(v)||v===null?'---':Number(v).toFixed(3)}
-
-// ============ CLOCK ============
-function updateClock(){
-  const d=new Date();
-  document.getElementById('clock').textContent=pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
-  document.getElementById('hdate').textContent=d.toLocaleDateString('id-ID',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+function fmtDate(d){
+  return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 }
-setInterval(updateClock,1000);updateClock();
 
-// ============ DATA STORAGE ============
+function fmtTime(d){
+  return pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
+}
+
+function parseDate(s){
+  var p = s.split('-');
+  return new Date(+p[0], +p[1]-1, +p[2]);
+}
+
+function n1(v){
+  if(v === undefined || v === null || v === '' || isNaN(Number(v))) return '---';
+  return Number(v).toFixed(1);
+}
+
+function n3(v){
+  if(v === undefined || v === null || v === '' || isNaN(Number(v))) return '---';
+  return Number(v).toFixed(3);
+}
+
+function el(id){ return document.getElementById(id); }
+
+// ============================================================
+//  CLOCK
+// ============================================================
+function updateClock(){
+  var d = new Date();
+  el('clock').textContent = pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
+  el('hdate').textContent = d.toLocaleDateString('id-ID',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ============================================================
+//  LOCAL STORAGE
+// ============================================================
 function loadStorage(){
-  try{
-    const te=localStorage.getItem('pm_events_v'+DATA_VERSION);
-    const tt=localStorage.getItem('pm_trends_v'+DATA_VERSION);
-    if(te) eventHistory=JSON.parse(te);
-    if(tt) trendData=JSON.parse(tt);
+  try {
+    var te = localStorage.getItem('pm_ev_v'+DATA_VER);
+    var tt = localStorage.getItem('pm_tr_v'+DATA_VER);
+    if(te) eventHistory = JSON.parse(te);
+    if(tt) trendData    = JSON.parse(tt);
     cleanOld();
-  }catch(e){eventHistory={};trendData={}}
+  } catch(e){ eventHistory = {}; trendData = {}; }
 }
 
 function saveStorage(){
-  try{
-    localStorage.setItem('pm_events_v'+DATA_VERSION,JSON.stringify(eventHistory));
-    localStorage.setItem('pm_trends_v'+DATA_VERSION,JSON.stringify(trendData));
-  }catch(e){
-    removeOldestDay();saveStorage();
-  }
+  try {
+    localStorage.setItem('pm_ev_v'+DATA_VER, JSON.stringify(eventHistory));
+    localStorage.setItem('pm_tr_v'+DATA_VER, JSON.stringify(trendData));
+  } catch(e){ removeOldestDay(); saveStorage(); }
 }
 
 function cleanOld(){
-  const cut=new Date();cut.setDate(cut.getDate()-MAX_DAYS);
-  const cutKey=fmt(cut);
-  Object.keys(eventHistory).forEach(k=>{if(k<cutKey)delete eventHistory[k]});
-  Object.keys(trendData).forEach(k=>{if(k<cutKey)delete trendData[k]});
+  var cut = new Date();
+  cut.setDate(cut.getDate() - MAX_DAYS);
+  var cutKey = fmtDate(cut);
+  Object.keys(eventHistory).forEach(function(k){ if(k < cutKey) delete eventHistory[k]; });
+  Object.keys(trendData).forEach(function(k){ if(k < cutKey) delete trendData[k]; });
   saveStorage();
 }
 
 function removeOldestDay(){
-  const ek=Object.keys(eventHistory).sort();
-  const tk=Object.keys(trendData).sort();
-  if(ek.length>0)delete eventHistory[ek[0]];
-  if(tk.length>0)delete trendData[tk[0]];
+  var ek = Object.keys(eventHistory).sort();
+  var tk = Object.keys(trendData).sort();
+  if(ek.length) delete eventHistory[ek[0]];
+  if(tk.length) delete trendData[tk[0]];
 }
 
-function addEvent(type,title,detail){
-  const now=new Date();
-  const dk=fmt(now);
-  if(!eventHistory[dk])eventHistory[dk]=[];
-  eventHistory[dk].push({type,title,detail,time:fmtTime(now),ts:now.getTime()});
-  if(eventHistory[dk].length>1000)eventHistory[dk].shift();
+// ============================================================
+//  EVENT HISTORY
+// ============================================================
+function addEvent(type, title, cssClass){
+  var now  = new Date();
+  var dk   = fmtDate(now);
+  if(!eventHistory[dk]) eventHistory[dk] = [];
+  eventHistory[dk].push({ type:type, title:title, cssClass:cssClass||'', time:fmtTime(now) });
+  if(eventHistory[dk].length > 1000) eventHistory[dk].shift();
   saveStorage();
-  if(fmt(histViewDate)===dk)renderHistory();
+  if(fmtDate(histViewD) === dk) renderHistory();
 }
 
+// ============================================================
+//  TREND DATA
+// ============================================================
 function addTrend(d){
-  const now=Date.now();
-  if(now-lastTrendSave<TREND_INTERVAL_MS)return;
-  lastTrendSave=now;
-  const dk=fmt(new Date());
-  const t=fmtTime(new Date());
-  if(!trendData[dk])trendData[dk]={time:[],VRN:[],VSN:[],VTN:[],VRS:[],VST:[],VRT:[],IR:[],IS:[],IT:[],IAVG:[],TAP:[],TPF:[],HZ:[]};
-  const td=trendData[dk];
+  var now = Date.now();
+  if(now - lastTrendSave < TREND_SAVE_MS) return;
+  lastTrendSave = now;
+
+  var dk = fmtDate(new Date());
+  var t  = fmtTime(new Date());
+
+  if(!trendData[dk]){
+    trendData[dk] = {
+      time:[], VRN:[], VSN:[], VTN:[],
+      VRS:[], VST:[], VRT:[],
+      IR:[], IS:[], IT:[], IAVG:[],
+      TAP:[], TRP:[], TPF:[], HZ:[],
+      PAE:[], NAE:[]
+    };
+  }
+
+  var td = trendData[dk];
   td.time.push(t);
-  td.VRN.push(d.VRN||0);td.VSN.push(d.VSN||0);td.VTN.push(d.VTN||0);
-  td.VRS.push(d.VRS||0);td.VST.push(d.VST||0);td.VRT.push(d.VRT||0);
-  td.IR.push(d.IR||0);td.IS.push(d.IS||0);td.IT.push(d.IT||0);td.IAVG.push(d.IAVG||0);
-  td.TAP.push(d.TAP||0);td.TPF.push(d.TPF||0);td.HZ.push(d.HZ||0);
-  // Limit 3600 points
-  if(td.time.length>3600){Object.keys(td).forEach(k=>{if(Array.isArray(td[k]))td[k].shift()})}
+  td.VRN.push(+(d.VRN)||0);  td.VSN.push(+(d.VSN)||0);  td.VTN.push(+(d.VTN)||0);
+  td.VRS.push(+(d.VRS)||0);  td.VST.push(+(d.VST)||0);  td.VRT.push(+(d.VRT)||0);
+  td.IR.push(+(d.IR)||0);    td.IS.push(+(d.IS)||0);    td.IT.push(+(d.IT)||0);
+  td.IAVG.push(+(d.IAVG)||0);
+  td.TAP.push(+(d.TAP)||0);  td.TRP.push(+(d.TRP)||0);
+  td.TPF.push(+(d.TPF)||0);  td.HZ.push(+(d.HZ)||0);
+  td.PAE.push(+(d.PAE)||0);  td.NAE.push(+(d.NAE)||0);
+
+  // Batasi 5000 titik per hari agar tidak overload localStorage
+  if(td.time.length > 5000){
+    Object.keys(td).forEach(function(k){ if(Array.isArray(td[k])) td[k].shift(); });
+  }
+
   saveStorage();
-  if(fmt(trendViewDate)===dk)updateCharts();
+  if(fmtDate(trendViewD) === dk) updateCharts();
   updateTrendInfo();
 }
 
-// ============ UI UPDATE ============
-function el(id){return document.getElementById(id)}
-
+// ============================================================
+//  UI UPDATE - DASHBOARD
+// ============================================================
 function updateDashboard(d){
-  // Voltage L-N
-  el('VRN').textContent=n2(d.VRN);
-  el('VSN').textContent=n2(d.VSN);
-  el('VTN').textContent=n2(d.VTN);
-  // Voltage L-L in subtitle
-  el('VRS_s').textContent=n2(d.VRS);
-  el('VST_s').textContent=n2(d.VST);
-  el('VRT_s').textContent=n2(d.VRT);
-  // Current bars
-  const maxA=MAX_CURRENT;
-  el('IR').textContent=n2(d.IR);el('bar_IR').style.width=Math.min(100,(d.IR||0)/maxA*100)+'%';
-  el('IS').textContent=n2(d.IS);el('bar_IS').style.width=Math.min(100,(d.IS||0)/maxA*100)+'%';
-  el('IT').textContent=n2(d.IT);el('bar_IT').style.width=Math.min(100,(d.IT||0)/maxA*100)+'%';
-  el('IAVG').textContent=n2(d.IAVG);el('bar_IAVG').style.width=Math.min(100,(d.IAVG||0)/maxA*100)+'%';
-  // Power
-  el('TAP').textContent=n2(d.TAP);
-  el('TRP').textContent=n2(d.TRP);
-  el('TPF').textContent=n3(d.TPF);
-  el('HZ').textContent=n2(d.HZ);
-  el('PAE').textContent=n2(d.PAE);
-  el('NAE').textContent=n2(d.NAE);
-  el('PRE').textContent=n2(d.PRE);
-  el('NRE').textContent=n2(d.NRE);
-}
+  el('d_VRN').textContent = n1(d.VRN);
+  el('d_VSN').textContent = n1(d.VSN);
+  el('d_VTN').textContent = n1(d.VTN);
+  el('d_VRS_s').textContent = n1(d.VRS);
+  el('d_VST_s').textContent = n1(d.VST);
+  el('d_VRT_s').textContent = n1(d.VRT);
 
-function updateDetail(d){
-  el('VRS').textContent=n2(d.VRS);el('VST').textContent=n2(d.VST);el('VRT').textContent=n2(d.VRT);
-  el('VRN_d').textContent=n2(d.VRN);el('VSN_d').textContent=n2(d.VSN);el('VTN_d').textContent=n2(d.VTN);
-  el('IR_d').textContent=n2(d.IR);el('IS_d').textContent=n2(d.IS);el('IT_d').textContent=n2(d.IT);el('IAVG_d').textContent=n2(d.IAVG);
-  el('TAP_d').textContent=n2(d.TAP);el('TRP_d').textContent=n2(d.TRP);
-  el('TPF_d').textContent=n3(d.TPF);el('HZ_d').textContent=n2(d.HZ);
-  el('PAE_d').textContent=n2(d.PAE);el('NAE_d').textContent=n2(d.NAE);
-  el('PRE_d').textContent=n2(d.PRE);el('NRE_d').textContent=n2(d.NRE);
-}
-
-function updateRS485(ok){
-  const badge=el('rs485badge');
-  if(ok){
-    badge.textContent='RS485: CONNECTED';
-    badge.className='rs485-badge ok';
-  }else{
-    badge.textContent='RS485: DISCONNECTED';
-    badge.className='rs485-badge err';
+  function setBar(barId, val){
+    el(barId).style.width = Math.min(100, Math.max(0, (+(val)||0) / MAX_CURR_A * 100)) + '%';
   }
+  el('d_IR').textContent   = n1(d.IR);   setBar('bar_IR',   d.IR);
+  el('d_IS').textContent   = n1(d.IS);   setBar('bar_IS',   d.IS);
+  el('d_IT').textContent   = n1(d.IT);   setBar('bar_IT',   d.IT);
+  el('d_IAVG').textContent = n1(d.IAVG); setBar('bar_IAVG', d.IAVG);
+
+  el('d_TAP').textContent = n1(d.TAP);
+  el('d_TRP').textContent = n1(d.TRP);
+  el('d_TPF').textContent = n3(d.TPF);
+  el('d_HZ').textContent  = n1(d.HZ);
+  el('d_PAE').textContent = n1(d.PAE);
+  el('d_NAE').textContent = n1(d.NAE);
+  el('d_PRE').textContent = n1(d.PRE);
+  el('d_NRE').textContent = n1(d.NRE);
 }
 
-// ============ CHARTS ============
-const co = {
-  responsive:true,maintainAspectRatio:false,
-  scales:{
-    x:{display:true,grid:{color:'rgba(0,207,255,0.04)'},ticks:{color:'#4a6080',maxTicksLimit:8,maxRotation:0},border:{color:'rgba(0,207,255,0.08)'}},
-    y:{display:true,grid:{color:'rgba(0,207,255,0.04)'},ticks:{color:'#4a6080'},border:{color:'rgba(0,207,255,0.08)'}}
+// ============================================================
+//  UI UPDATE - DETAIL
+// ============================================================
+function updateDetail(d){
+  el('dt_VRS').textContent  = n1(d.VRS);
+  el('dt_VST').textContent  = n1(d.VST);
+  el('dt_VRT').textContent  = n1(d.VRT);
+  el('dt_VRN').textContent  = n1(d.VRN);
+  el('dt_VSN').textContent  = n1(d.VSN);
+  el('dt_VTN').textContent  = n1(d.VTN);
+  el('dt_IR').textContent   = n1(d.IR);
+  el('dt_IS').textContent   = n1(d.IS);
+  el('dt_IT').textContent   = n1(d.IT);
+  el('dt_IAVG').textContent = n1(d.IAVG);
+  el('dt_TAP').textContent  = n1(d.TAP);
+  el('dt_TRP').textContent  = n1(d.TRP);
+  el('dt_TPF').textContent  = n3(d.TPF);
+  el('dt_HZ').textContent   = n1(d.HZ);
+  el('dt_PAE').textContent  = n1(d.PAE);
+  el('dt_NAE').textContent  = n1(d.NAE);
+  el('dt_PRE').textContent  = n1(d.PRE);
+  el('dt_NRE').textContent  = n1(d.NRE);
+}
+
+// ============================================================
+//  RS485 STATUS
+// ============================================================
+function updateRS485(ok){
+  var b = el('rs485badge');
+  b.textContent = ok ? 'RS485: CONNECTED' : 'RS485: DISCONNECTED';
+  b.className   = 'rs485-badge ' + (ok ? 'ok' : 'err');
+  if(prevRS485 !== null && prevRS485 !== ok){
+    addEvent('rs485',
+      ok ? 'RS485 Kembali Terhubung' : 'RS485 Terputus',
+      ok ? 'connected' : 'disconnected');
+  }
+  prevRS485 = ok;
+}
+
+// ============================================================
+//  CHARTS
+// ============================================================
+var baseScales = {
+  x:{
+    display: true,
+    grid:{ color:'rgba(0,207,255,0.04)' },
+    ticks:{ color:'#4a6080', maxTicksLimit:7, maxRotation:0 },
+    border:{ color:'rgba(0,207,255,0.07)' }
   },
-  plugins:{legend:{display:true,labels:{color:'#4a6080',boxWidth:10,padding:16,font:{size:11}}}},
-  elements:{point:{radius:1},line:{tension:0.3,borderWidth:1.5}},
-  interaction:{intersect:false,mode:'index'},
-  animation:{duration:0}
+  y:{
+    display: true,
+    grid:{ color:'rgba(0,207,255,0.04)' },
+    ticks:{ color:'#4a6080' },
+    border:{ color:'rgba(0,207,255,0.07)' }
+  }
 };
 
-function mkChart(id,datasets,yopts={}){
-  return new Chart(document.getElementById(id),{
-    type:'line',
-    data:{labels:[],datasets},
-    options:{...co,scales:{...co.scales,y:{...co.scales.y,...yopts}}}
+var basePlugins = {
+  legend:{
+    display: true,
+    labels:{ color:'#4a6080', boxWidth:10, padding:14, font:{ size:10 } }
+  }
+};
+
+function makeDataset(label, color, fill){
+  return {
+    label: label,
+    data: [],
+    borderColor: color,
+    backgroundColor: fill ? color.replace('rgb(','rgba(').replace(')',',0.1)') : 'transparent',
+    fill: fill || false,
+    borderWidth: 1.5,
+    tension: 0.3,
+    pointRadius: 1
+  };
+}
+
+function makeChart(canvasId, datasets, extraYOpts){
+  var yOpts = Object.assign({}, baseScales.y, extraYOpts || {});
+  return new Chart(el(canvasId), {
+    type: 'line',
+    data: { labels:[], datasets: datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration:0 },
+      interaction: { intersect:false, mode:'index' },
+      elements: { point:{ radius:1 }, line:{ tension:0.3, borderWidth:1.5 } },
+      plugins: basePlugins,
+      scales: { x: baseScales.x, y: yOpts }
+    }
   });
 }
 
-const chartVLN = mkChart('chartVLN',[
-  {label:'V R-N',data:[],borderColor:'#00cfff',backgroundColor:'rgba(0,207,255,0.06)',fill:true},
-  {label:'V S-N',data:[],borderColor:'#00ff99',backgroundColor:'rgba(0,255,153,0.04)',fill:false},
-  {label:'V T-N',data:[],borderColor:'#ff9800',backgroundColor:'rgba(255,152,0,0.04)',fill:false}
-],{min:0});
+// Buat semua chart
+var cVLN = makeChart('cVLN', [
+  makeDataset('V R-N', '#00cfff', true),
+  makeDataset('V S-N', '#00ff99', false),
+  makeDataset('V T-N', '#ff9800', false)
+], { min: 0 });
 
-const chartVLL = mkChart('chartVLL',[
-  {label:'V R-S',data:[],borderColor:'#00cfff',fill:false},
-  {label:'V S-T',data:[],borderColor:'#00ff99',fill:false},
-  {label:'V R-T',data:[],borderColor:'#ff9800',fill:false}
-],{min:0});
+var cVLL = makeChart('cVLL', [
+  makeDataset('V R-S', '#00cfff', false),
+  makeDataset('V S-T', '#00ff99', false),
+  makeDataset('V R-T', '#ff9800', false)
+], { min: 0 });
 
-const chartI = mkChart('chartI',[
-  {label:'I-R',data:[],borderColor:'#00cfff',fill:false},
-  {label:'I-S',data:[],borderColor:'#00ff99',fill:false},
-  {label:'I-T',data:[],borderColor:'#ff9800',fill:false},
-  {label:'I-AVG',data:[],borderColor:'#aaa',borderDash:[4,2],fill:false}
-],{min:0});
+var cI = makeChart('cI', [
+  makeDataset('I-R',   '#00cfff', false),
+  makeDataset('I-S',   '#00ff99', false),
+  makeDataset('I-T',   '#ff9800', false),
+  makeDataset('I-AVG', '#888888', false)
+], { min: 0 });
 
-const chartPow = mkChart('chartPow',[
-  {label:'Active Power (kW)',data:[],borderColor:'#00ff99',backgroundColor:'rgba(0,255,153,0.08)',fill:true}
+var cPow = makeChart('cPow', [
+  makeDataset('Active Power kW', '#00ff99', true)
 ]);
 
-const chartPF = mkChart('chartPF',[
-  {label:'Power Factor',data:[],borderColor:'#00cfff',yAxisID:'y'},
-  {label:'Frequency (Hz)',data:[],borderColor:'#ff9800',yAxisID:'y2'}
-],{});
-// Override PF chart options for dual axis
-chartPF.options.scales.y2={display:true,position:'right',grid:{drawOnChartArea:false,color:'rgba(255,152,0,0.06)'},ticks:{color:'#ff9800'},border:{color:'rgba(255,152,0,0.2)'}};
-chartPF.update('none');
+var cEnergy = makeChart('cEnergy', [
+  makeDataset('Act.Energy + kWh', '#00cfff', true),
+  makeDataset('Act.Energy - kWh', '#ff4466', false)
+]);
+
+// Power Factor + Frequency - dual axis (dibuat manual)
+var cPF = new Chart(el('cPF'), {
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [
+      {
+        label: 'Power Factor',
+        data: [], borderColor: '#00cfff', backgroundColor:'transparent',
+        borderWidth:1.5, tension:0.3, pointRadius:1, yAxisID:'y'
+      },
+      {
+        label: 'Frequency Hz',
+        data: [], borderColor: '#ff9800', backgroundColor:'transparent',
+        borderWidth:1.5, tension:0.3, pointRadius:1, yAxisID:'y2'
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: { duration:0 },
+    interaction: { intersect:false, mode:'index' },
+    plugins: basePlugins,
+    scales: {
+      x: baseScales.x,
+      y:  { display:true, position:'left',  grid:{ color:'rgba(0,207,255,0.04)' }, ticks:{ color:'#00cfff' } },
+      y2: { display:true, position:'right', grid:{ drawOnChartArea:false }, ticks:{ color:'#ff9800' } }
+    }
+  }
+});
+
+function setChartData(chart, labels, datasetsArr){
+  chart.data.labels = labels;
+  datasetsArr.forEach(function(ds, i){
+    chart.data.datasets[i].data = ds || [];
+  });
+  chart.update('none');
+}
 
 function updateCharts(){
-  const dk=fmt(trendViewDate);
-  const td=trendData[dk]||{time:[],VRN:[],VSN:[],VTN:[],VRS:[],VST:[],VRT:[],IR:[],IS:[],IT:[],IAVG:[],TAP:[],TPF:[],HZ:[]};
+  var dk = fmtDate(trendViewD);
+  var td = trendData[dk] || {
+    time:[], VRN:[], VSN:[], VTN:[],
+    VRS:[], VST:[], VRT:[],
+    IR:[], IS:[], IT:[], IAVG:[],
+    TAP:[], TRP:[], TPF:[], HZ:[],
+    PAE:[], NAE:[]
+  };
+  var L = td.time || [];
 
-  chartVLN.data.labels=td.time||[];
-  chartVLN.data.datasets[0].data=td.VRN||[];
-  chartVLN.data.datasets[1].data=td.VSN||[];
-  chartVLN.data.datasets[2].data=td.VTN||[];
-  chartVLN.update('none');
-
-  chartVLL.data.labels=td.time||[];
-  chartVLL.data.datasets[0].data=td.VRS||[];
-  chartVLL.data.datasets[1].data=td.VST||[];
-  chartVLL.data.datasets[2].data=td.VRT||[];
-  chartVLL.update('none');
-
-  chartI.data.labels=td.time||[];
-  chartI.data.datasets[0].data=td.IR||[];
-  chartI.data.datasets[1].data=td.IS||[];
-  chartI.data.datasets[2].data=td.IT||[];
-  chartI.data.datasets[3].data=td.IAVG||[];
-  chartI.update('none');
-
-  chartPow.data.labels=td.time||[];
-  chartPow.data.datasets[0].data=td.TAP||[];
-  chartPow.update('none');
-
-  chartPF.data.labels=td.time||[];
-  chartPF.data.datasets[0].data=td.TPF||[];
-  chartPF.data.datasets[1].data=td.HZ||[];
-  chartPF.update('none');
+  setChartData(cVLN,    L, [td.VRN, td.VSN, td.VTN]);
+  setChartData(cVLL,    L, [td.VRS, td.VST, td.VRT]);
+  setChartData(cI,      L, [td.IR, td.IS, td.IT, td.IAVG]);
+  setChartData(cPow,    L, [td.TAP]);
+  setChartData(cEnergy, L, [td.PAE, td.NAE]);
+  setChartData(cPF,     L, [td.TPF, td.HZ]);
 }
 
 function updateTrendInfo(){
-  let total=0;
-  Object.values(trendData).forEach(d=>{total+=(d.time?.length||0)});
-  const days=Object.keys(trendData).length;
-  el('trendInfo').textContent=`Storage: ${total} data points dari ${days} hari (maks ${MAX_DAYS} hari)`;
+  var total = 0;
+  Object.values(trendData).forEach(function(d){ total += (d.time ? d.time.length : 0); });
+  var days = Object.keys(trendData).length;
+  el('trendInfo').textContent = 'Storage: '+total+' data points dari '+days+' hari (maks '+MAX_DAYS+' hari)';
 }
 
-// ============ HISTORY RENDER ============
-const HIST_ICONS={mqtt:'🔗',rs485:'📡',data:'📊',other:'📝'};
-const HIST_COLORS={connected:'connected',disconnected:'disconnected',info:'info'};
+// ============================================================
+//  HISTORY RENDER
+// ============================================================
+var HICONS = { mqtt:'&#128279;', rs485:'&#128225;', data:'&#128202;', other:'&#128221;' };
 
 function renderHistory(){
-  const dk=fmt(histViewDate);
-  const filter=el('histFilter').value;
-  let ev=(eventHistory[dk]||[]).slice().reverse();
-  if(filter!=='all')ev=ev.filter(e=>e.type===filter);
+  var dk     = fmtDate(histViewD);
+  var filter = el('histFilter').value;
+  var ev     = (eventHistory[dk] || []).slice().reverse();
+  if(filter !== 'all') ev = ev.filter(function(e){ return e.type === filter; });
 
-  el('hcount').textContent=`${ev.length} event pada ${dk}`;
+  el('hcount').textContent = ev.length + ' event pada ' + dk;
 
-  if(ev.length===0){
-    el('hlist').innerHTML='<div class="no-data">Tidak ada event pada tanggal ini</div>';
+  if(!ev.length){
+    el('hlist').innerHTML = '<div class="no-data">Tidak ada event pada tanggal ini</div>';
   } else {
-    el('hlist').innerHTML=ev.map(e=>`
-      <div class="hitem">
-        <div class="hitem-icon">${HIST_ICONS[e.type]||'📝'}</div>
-        <div class="hitem-main">
-          <div class="hitem-title ${e.detail||''}">${e.title}</div>
-          <div class="hitem-sub">${e.detail||''}</div>
-        </div>
-        <div class="hitem-time">${e.time}</div>
-      </div>
-    `).join('');
+    el('hlist').innerHTML = ev.map(function(e){
+      var icon = HICONS[e.type] || HICONS.other;
+      return '<div class="hitem">'
+        +'<div class="hitem-icon">'+icon+'</div>'
+        +'<div class="hitem-main">'
+          +'<div class="hitem-title '+(e.cssClass||'')+'">'+e.title+'</div>'
+        +'</div>'
+        +'<div class="hitem-time">'+e.time+'</div>'
+        +'</div>';
+    }).join('');
   }
 
-  let total=0;Object.values(eventHistory).forEach(a=>total+=a.length);
-  const days=Object.keys(eventHistory).length;
-  el('histInfo').textContent=`Storage: ${total} events dari ${days} hari (maks ${MAX_DAYS} hari)`;
+  var total = 0;
+  Object.values(eventHistory).forEach(function(a){ total += a.length; });
+  el('histInfo').textContent = 'Storage: '+total+' events dari '+Object.keys(eventHistory).length+' hari (maks '+MAX_DAYS+' hari)';
 }
 
-el('histFilter').addEventListener('change',renderHistory);
+el('histFilter').addEventListener('change', renderHistory);
 
-// ============ DATE NAV FUNCTIONS ============
-function setupDateNav(prevId,nextId,todayId,inputId,stateRef,updateFn){
-  el(inputId).addEventListener('change',function(){stateRef.d=parseD(this.value);updateFn();});
-  el(prevId).addEventListener('click',()=>{stateRef.d.setDate(stateRef.d.getDate()-1);el(inputId).value=fmt(stateRef.d);updateFn();});
-  el(nextId).addEventListener('click',()=>{stateRef.d.setDate(stateRef.d.getDate()+1);el(inputId).value=fmt(stateRef.d);updateFn();});
-  el(todayId).addEventListener('click',()=>{stateRef.d=new Date();el(inputId).value=fmt(stateRef.d);updateFn();});
-  el(inputId).value=fmt(stateRef.d);
+// ============================================================
+//  DATE NAVIGATION
+// ============================================================
+function setupDateNav(prevId, nextId, todayId, inputId, ref, onChange){
+  el(inputId).value = fmtDate(ref.d);
+
+  el(inputId).addEventListener('change', function(){
+    ref.d = parseDate(this.value);
+    onChange();
+  });
+  el(prevId).addEventListener('click', function(){
+    ref.d.setDate(ref.d.getDate() - 1);
+    el(inputId).value = fmtDate(ref.d);
+    onChange();
+  });
+  el(nextId).addEventListener('click', function(){
+    ref.d.setDate(ref.d.getDate() + 1);
+    el(inputId).value = fmtDate(ref.d);
+    onChange();
+  });
+  el(todayId).addEventListener('click', function(){
+    ref.d = new Date();
+    el(inputId).value = fmtDate(ref.d);
+    onChange();
+  });
 }
 
-const trendRef={d:trendViewDate};
-const histRef={d:histViewDate};
+var tRef = { d: trendViewD };
+var hRef = { d: histViewD  };
 
-setupDateNav('trendPrev','trendNext','trendToday','trendDate',trendRef,()=>{trendViewDate=trendRef.d;updateCharts();});
-setupDateNav('histPrev','histNext','histToday','histDate',histRef,()=>{histViewDate=histRef.d;renderHistory();});
-
-el('clearTrends').addEventListener('click',()=>{
-  if(confirm('Hapus semua data trend?')){trendData={};localStorage.removeItem('pm_trends_v'+DATA_VERSION);updateCharts();}
+setupDateNav('trendPrev','trendNext','trendToday','trendDate', tRef, function(){
+  trendViewD = tRef.d; updateCharts();
 });
-el('clearHistory').addEventListener('click',()=>{
-  if(confirm('Hapus semua history?')){eventHistory={};localStorage.removeItem('pm_events_v'+DATA_VERSION);renderHistory();}
+setupDateNav('histPrev','histNext','histToday','histDate', hRef, function(){
+  histViewD = hRef.d; renderHistory();
 });
 
-// ============ TABS ============
-document.querySelectorAll('.tab').forEach(t=>{
-  t.addEventListener('click',()=>{
-    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));
+el('clearTrends').addEventListener('click', function(){
+  if(confirm('Hapus semua data trend?')){
+    trendData = {};
+    localStorage.removeItem('pm_tr_v'+DATA_VER);
+    updateCharts(); updateTrendInfo();
+  }
+});
+
+el('clearHistory').addEventListener('click', function(){
+  if(confirm('Hapus semua history?')){
+    eventHistory = {};
+    localStorage.removeItem('pm_ev_v'+DATA_VER);
+    renderHistory();
+  }
+});
+
+// ============================================================
+//  TABS
+// ============================================================
+document.querySelectorAll('.tab').forEach(function(t){
+  t.addEventListener('click', function(){
+    document.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('active'); });
+    document.querySelectorAll('.tab-content').forEach(function(x){ x.classList.remove('active'); });
     t.classList.add('active');
     el('tab-'+t.dataset.tab).classList.add('active');
-    if(t.dataset.tab==='trends')updateCharts();
-    if(t.dataset.tab==='history')renderHistory();
+    if(t.dataset.tab === 'trends')  updateCharts();
+    if(t.dataset.tab === 'history') renderHistory();
   });
 });
 
-// ============ MQTT ============
-const mqttOpts = {
-  clientId:'power_meter_web_'+Math.random().toString(16).substr(2,8),
-  reconnectPeriod:4000,
-  connectTimeout:10000
-};
-if(MQTT_USER){mqttOpts.username=MQTT_USER;mqttOpts.password=MQTT_PASS;}
-
-const mqttUrl=`wss://${MQTT_HOST}:${MQTT_PORT}${MQTT_PATH}`;
-let mqttClient;
-
+// ============================================================
+//  MQTT
+// ============================================================
 function connectMQTT(){
-  try{
-    mqttClient=mqtt.connect(mqttUrl,mqttOpts);
+  var url = 'wss://'+MQTT_HOST+':'+MQTT_PORT+MQTT_PATH;
+  var opts = {
+    clientId: 'pm_web_'+Math.random().toString(16).substr(2,8),
+    username: MQTT_USER,
+    password: MQTT_PASS,
+    reconnectPeriod: 5000,
+    connectTimeout: 15000,
+    keepalive: 60
+  };
 
-    mqttClient.on('connect',()=>{
-      el('sdot').className='sdot on';
-      el('statusText').textContent='Terhubung ke MQTT broker';
-      mqttClient.subscribe(TOPIC_DATA);
-      addEvent('mqtt','MQTT Connected','connected');
-    });
-
-    mqttClient.on('reconnect',()=>{
-      el('sdot').className='sdot warn';
-      el('statusText').textContent='Mencoba reconnect MQTT...';
-    });
-
-    mqttClient.on('error',(err)=>{
-      el('sdot').className='sdot';
-      el('statusText').textContent='MQTT Error: '+err.message;
-    });
-
-    mqttClient.on('offline',()=>{
-      el('sdot').className='sdot';
-      el('statusText').textContent='MQTT Offline / Terputus';
-      addEvent('mqtt','MQTT Disconnected','disconnected');
-    });
-
-    mqttClient.on('message',(topic,payload)=>{
-      try{
-        const d=JSON.parse(payload.toString());
-        lastValues=d;
-        updateDashboard(d);
-        updateDetail(d);
-        updateRS485(d.rs485===1||d.rs485===true);
-        addTrend(d);
-
-        // Log to history periodically (every 60s)
-        const now=Date.now();
-        if(!mqttClient._lastDataLog||now-mqttClient._lastDataLog>60000){
-          mqttClient._lastDataLog=now;
-          addEvent('data',`Data update — ${n2(d.TAP)} kW | V R-N: ${n2(d.VRN)} V`,'info');
-        }
-
-        // RS485 status change detection
-        const rs485ok=d.rs485===1||d.rs485===true;
-        if(mqttClient._lastRS485!==rs485ok){
-          mqttClient._lastRS485=rs485ok;
-          addEvent('rs485',rs485ok?'RS485 Terhubung':'RS485 Terputus',rs485ok?'connected':'disconnected');
-        }
-
-      }catch(e){console.error('Parse error:',e);}
-    });
-
-  }catch(e){
-    el('statusText').textContent='Gagal connect MQTT: '+e.message;
+  var client;
+  try {
+    client = mqtt.connect(url, opts);
+  } catch(e){
+    el('statusText').textContent = 'Gagal inisialisasi MQTT: '+e.message;
+    return;
   }
+
+  client.on('connect', function(){
+    el('sdot').className = 'sdot on';
+    el('statusText').textContent = 'Terhubung ke MQTT: '+MQTT_HOST;
+    client.subscribe(TOPIC_DATA);
+    addEvent('mqtt','MQTT Terhubung ke broker','connected');
+  });
+
+  client.on('reconnect', function(){
+    el('sdot').className = 'sdot warn';
+    el('statusText').textContent = 'Mencoba reconnect MQTT...';
+  });
+
+  client.on('error', function(err){
+    el('sdot').className = 'sdot';
+    el('statusText').textContent = 'MQTT Error: '+(err.message||err);
+  });
+
+  client.on('offline', function(){
+    el('sdot').className = 'sdot';
+    el('statusText').textContent = 'MQTT Offline / Terputus';
+    addEvent('mqtt','MQTT Terputus','disconnected');
+  });
+
+  client.on('message', function(topic, payload){
+    try {
+      var d = JSON.parse(payload.toString());
+
+      updateDashboard(d);
+      updateDetail(d);
+      updateRS485(d.rs485 === 1 || d.rs485 === true);
+      addTrend(d);
+
+      // Log snapshot ke history tiap 60 detik
+      var now = Date.now();
+      if(now - lastDataLog > 60000){
+        lastDataLog = now;
+        addEvent('data',
+          'Snapshot — Power: '+n1(d.TAP)+' kW | V R-N: '+n1(d.VRN)+' V | I AVG: '+n1(d.IAVG)+' A',
+          'info');
+      }
+
+    } catch(e){ console.error('MQTT parse error:', e); }
+  });
 }
 
-// ============ INIT ============
+// ============================================================
+//  INIT
+// ============================================================
 loadStorage();
 renderHistory();
 updateCharts();
